@@ -1,0 +1,11 @@
+@EndUserText.label: 'Travel approver app'
+define service ZUI_RAP_C_TRAVEL_APPROVER {
+  expose ZRAP_C_TRAVEL_APPROVER_M1  as Travel;
+  expose ZRAP_C_BOOKING_APPROVER_M1 as Booking;
+  expose /DMO/I_Customer_StdVH      as Passenger;
+  expose /DMO/I_Agency_StdVH        as TravelAgency;
+  expose I_CurrencyStdVH            as Currency;
+  expose I_CountryVH                as Country;
+  expose /DMO/I_Overall_Status_VH   as OverallStatus;
+  expose /DMO/I_Booking_Status_VH   as BookingStatus;
+}

@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DEVC>
-    <CTEXT>demo</CTEXT>
+    <CTEXT>Managed scenrio to practice</CTEXT>
    </DEVC>
   </asx:values>
  </asx:abap>

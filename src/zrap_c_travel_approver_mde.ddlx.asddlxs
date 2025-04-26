@@ -1,0 +1,159 @@
+@Metadata.layer: #CUSTOMER
+annotate view ZRAP_C_TRAVEL_APPROVER_M1 with
+{
+  @UI.facet:   [
+
+              {
+                 purpose: #HEADER,
+                 type: #DATAPOINT_REFERENCE,
+                 label: 'Flight ticket price',
+                 position:10,
+                 targetQualifier: 'Price_data'
+               },
+
+                                     {
+                       purpose: #STANDARD,
+                       type: #COLLECTION,
+                       position: 10,
+                       id: 'Super',
+                       label: 'Additional details'
+                      },
+
+                     {
+                       purpose: #STANDARD,
+                       type: #IDENTIFICATION_REFERENCE,
+                       label: 'More info',
+                       position: 10,
+                       parentId: 'Super'
+                       },
+
+                                    {
+                         purpose: #STANDARD,
+                         type: #FIELDGROUP_REFERENCE,
+                         label: 'Price check',
+                         parentId: 'Super',
+                         position: 20,
+                         targetQualifier: 'Pricing'
+                         },
+
+                       {
+                         purpose: #STANDARD,
+                         type: #FIELDGROUP_REFERENCE,
+                         label: 'Dates',
+                         parentId: 'Super',
+                         position: 30,
+                         targetQualifier: 'Dates'
+                         },
+
+                       {
+                          purpose:         #STANDARD,
+                          type:            #LINEITEM_REFERENCE,
+                          label:           'Bookings',
+                          position:        20,
+                          targetElement:   'Booking'
+                          }
+  //
+  //                      {
+  //                         purpose: #HEADER,
+  //                         type: #FIELDGROUP_REFERENCE,
+  //                         label: 'Status',
+  //                         position: 20,
+  //                         targetQualifier: 'status'
+  //                        }
+
+      ]
+
+
+  @UI: {  lineItem:       [ { position: 10 } ,
+                            { type: #FOR_ACTION, label: 'Accept Travel',dataAction: 'acceptTravel' },
+                            { type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'Reject Travel' } ],
+              identification: [ { position: 10 } ],
+  //                                { type: #FOR_ACTION, dataAction: 'acceptTravel', label: 'Accept Travel' },
+  //                                { type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'Reject Travel' }
+  //               ],
+
+            selectionField: [ { position: 10 } ] ,
+            textArrangement: #TEXT_ONLY }
+  TravelId;
+  //
+  @UI: {  lineItem:       [ { position: 20 } ],
+              identification: [ { position: 20 } ],
+            selectionField: [ { position: 20 } ] }
+  AgencyID;
+
+  @UI: {  lineItem:       [ { position: 25 } ],
+            identification: [ { position: 25 } ],
+          selectionField: [ { position: 25 } ] }
+  @EndUserText.quickInfo: 'Travel Agency Name'
+  AgencyName;
+
+  @UI: {  lineItem:       [ { position: 30 } ],
+            identification: [ { position: 30 } ],
+
+          selectionField: [ { position: 30 } ] }
+  CustomerID;
+
+  @UI: {  lineItem:       [ { position: 40 } ] ,
+          identification: [ { position: 40 } ] }
+  CustomerName;
+
+  @UI: {  lineItem:       [ { position: 45 } ],
+           fieldGroup: [{ qualifier: 'Dates', label: 'Begin date', position: 10 }]
+       }
+  BeginDate;
+
+  @UI: {  lineItem:       [ { position: 50 } ],
+      fieldGroup: [{ qualifier: 'Dates', label: 'End date', position: 20 }]
+   }
+  EndDate;
+
+  @UI: {  lineItem:       [ { position: 60 } ],
+          fieldGroup: [{ qualifier: 'Pricing', label: 'Booking price', position: 10 }]
+       }
+  //  //       identification: [ { position: 60 } ]
+  BookingFee;
+  @UI: {  lineItem:       [ { position: 70 } ],
+        dataPoint: { qualifier: 'Price_data', title: 'Flight price' },
+          fieldGroup: [{ qualifier: 'Pricing', label: 'Total Fee', position: 20 }]
+        }
+  TotalPrice;
+
+  @UI: {  lineItem:       [ { position: 80 } ] }
+  CurrencyCode;
+
+  @UI: {  lineItem:       [ { position: 90 } ] }
+  Description;
+
+  @UI: {  lineItem:       [ { position: 100,    // criticality: 'Criticality',
+                     importance: #HIGH } ],
+        fieldGroup: [{ qualifier: 'Pricing', label: 'Status', position: 30 }] }
+  OverallStatus;
+
+  @UI: {  lineItem:       [ { position: 110 } ] }
+  CreatedBy;
+
+  @UI.hidden: true
+  CreatedAt;
+
+  //  @UI: {  lineItem:       [ { position: 125 } ],
+  //             dataPoint: { qualifier: 'status', title: 'StatusText' }
+  //          } //,, criticality: 'Criticality'}
+  //  StatusText;
+  //  @UI: {  lineItem:       [ { position: 130 } ]
+  //
+  //  //             dataPoint: { qualifier: 'status', title: 'Criticality' }
+  //
+  //  //       identification:[ { type: #FOR_ACTION, label: 'copy travel',
+  //  //                          dataAction: 'copyTravel' } ]
+  //
+  //        }
+  //  Criticality;
+
+
+  @UI.hidden: true
+  LastChangedBy;
+  @UI.hidden: true
+  LastChangedAt;
+  /* Associations */
+
+}
