@@ -10,31 +10,37 @@ etag master LastChangedAt
 early numbering
 {
 
-determination setStatusToOpen on modify { create; }
+  field ( readonly ) TravelId, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+  field ( mandatory ) CustomerID, BeginDate, EndDate;
 
-  field ( readonly ) TravelId, CreatedAt,CreatedBy,LastChangedAt,LastChangedBy;
-  field (mandatory) AgencyID, CustomerID ;
-//  field ( readonly ) OverallStatus;
+  internal action recalcTotalPrice;
+  determination calculateTotalPrice on modify { create; field BookingFee, CurrencyCode; }
+  determination setStatusToOpen on modify { create; }
+  validation validatecustomer on save { create; field CustomerID;}
+  validation validatedates on save { create; field BeginDate, EndDate; }
+
+
+
+  //  field ( readonly ) OverallStatus;
   create;
   update;
   delete;
 
 
-determination calculateTotalPrice on modify { field BookingFee, CurrencyCode; }
-//determination calculateTravelID   on save   { create; }
+  //determination calculateTravelID   on save   { create; }
 
-// instance action and dynamic action control
+  // instance action and dynamic action control
   action ( features : instance ) acceptTravel result [1] $self;
   action ( features : instance ) rejectTravel result [1] $self;
 
-    factory action copyTravel [1];
-
-    internal action recalcTotalPrice;
+  factory action copyTravel [1];
 
 
-//  association Booking { create; }
 
-// dynamic feature control when status is rejected create to be disabled
+
+  //  association Booking { create; }
+
+  // dynamic feature control when status is rejected create to be disabled
   association Booking { create ( features : instance ); }
   mapping for /dmo/travel_m
     {
@@ -66,7 +72,10 @@ early numbering
   update;
   delete;
   field ( readonly ) TravelId, BookingId, LastChangedAt;
-  field (mandatory)  CarrierId, ConnectionId;
+  field ( mandatory ) CarrierId, ConnectionId;
+
+
+  determination calculateTotalPrice on modify { create; field FlightPrice, CurrencyCode; }
   association Travel;
   association Booksupplement { create; }
 
@@ -97,8 +106,11 @@ early numbering
 {
   update;
   delete;
-  field ( readonly ) TravelId, BookingId, BookingSupplementId,LastChangedAt;
-  field (mandatory) Price, CurrencyCode;
+  field ( readonly ) TravelId, BookingId, BookingSupplementId, LastChangedAt;
+  field ( mandatory ) Price, CurrencyCode;
+
+   determination calculateTotalPrice on modify { create; field Price, CurrencyCode; }
+
   association Travel;
   association Booking;
 

@@ -23,7 +23,7 @@ annotate view ZRAP_C_TRAVEL_M1 with
                         type: #COLLECTION,
                         position: 10,
                         id: 'Super',
-                        label: 'Additional details'
+                        label: 'Additional '
                        },
 
                       {
