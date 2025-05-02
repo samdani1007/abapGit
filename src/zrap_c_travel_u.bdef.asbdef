@@ -1,0 +1,19 @@
+projection;
+strict ( 2 );
+
+define behavior for ZRAP_C_TRAVEL_U alias Travel
+{
+  use create;
+  use update;
+  use delete;
+
+  use association Booking { create; }
+}
+
+define behavior for ZRAP_C_BOOKING_U alias Bookin
+{
+  use update;
+  use delete;
+
+  use association Travel;
+}

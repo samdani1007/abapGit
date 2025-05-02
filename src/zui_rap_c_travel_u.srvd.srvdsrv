@@ -1,0 +1,12 @@
+@EndUserText.label: 'Travel app'
+define service ZUI_RAP_C_TRAVEL_U {
+  expose ZRAP_C_TRAVEL_U          as Travel;
+  expose ZRAP_C_BOOKING_U         as Booking;
+  expose /DMO/I_Agency            as agency;
+  expose /DMO/I_Customer          as customer;
+  expose I_Currency               as currency;
+  expose /DMO/I_Overall_Status_VH as overallstatus;
+  expose /DMO/I_Carrier           as carrier;
+  expose /DMO/I_Connection        as connection;
+  expose /DMO/I_Booking_Status_VH as bookstatus;
+}
