@@ -1,0 +1,22 @@
+projection;
+strict ( 2 );
+
+define behavior for ZVI_C_TRAVEL01_APPROVER alias Travel
+{
+//  use create;
+//  use update;
+//  use delete;
+
+//  use action copyTravel;
+    use action Approve;
+    use action Reject;
+  use association Booking { create; }
+}
+
+define behavior for ZVI_C_BOOKING01_APPROVER alias Booking
+{
+//  use update;
+//  use delete;
+
+  use association Travel;
+}

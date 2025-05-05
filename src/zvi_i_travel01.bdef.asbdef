@@ -1,0 +1,109 @@
+managed ;
+strict ( 2 );
+
+define behavior for ZVI_I_TRAVEL01 alias Travel
+implementation in class zbp_vi_i_travel01 unique
+persistent table /dmo/travel_m
+lock master
+authorization master ( instance )
+etag master LastChangedAt
+early numbering
+{
+  create;
+  update;
+  delete;
+  field ( readonly ) TravelId;
+  field ( mandatory ) CustomerID;
+  factory action copyTravel [1];
+  association Booking { create (features:instance); }
+
+internal action recalculcTotalPrice;
+  determination setStatusToOpen on modify { create; }
+  determination calculateTotalPrice on modify { create; field BookingFee, CurrencyCode; }
+
+  validation validatecustomer on save { create; field CustomerID; }
+  validation validatestatus on save { create; field OverallStatus; }
+
+  // instance action and dynamic action control
+  action ( features : instance ) Approve result [1] $self;
+  action ( features : instance ) Reject result [1] $self;
+
+  mapping for /dmo/travel_m
+    {
+      TravelId      = travel_id;
+      AgencyID      = agency_id;
+      BeginDate     = begin_date;
+      BookingFee    = booking_fee;
+      CreatedAt     = created_at;
+      CreatedBy     = created_by;
+      CurrencyCode  = currency_code;
+      CustomerID    = customer_id;
+      Description   = description;
+      EndDate       = end_date;
+      LastChangedAt = last_changed_at;
+      LastChangedBy = last_changed_by;
+      OverallStatus = overall_status;
+      TotalPrice    = total_price;
+    }
+
+}
+
+define behavior for ZVI_I_BOOKING01 alias Booking
+implementation in class zbp_vi_i_booking01 unique
+persistent table /dmo/booking_m
+lock dependent by Travel
+authorization dependent by Travel
+etag master LastChangedAt
+early numbering
+{
+  update;
+  delete;
+  field ( readonly ) TravelId, BookingId;
+  association Travel;
+  association Booksupplement { create; }
+
+  determination calculateTotalPrice on modify { create; field FlightPrice, CurrencyCode; }
+
+  mapping for /dmo/booking_m
+    {
+      TravelId      = travel_id;
+      BookingDate   = booking_date;
+      BookingId     = booking_id;
+      BookingStatus = booking_status;
+      CarrierId     = carrier_id;
+      ConnectionId  = connection_id;
+      CurrencyCode  = currency_code;
+      CustomerId    = customer_id;
+      FlightDate    = flight_date;
+      FlightPrice   = flight_price;
+      LastChangedAt = last_changed_at;
+    }
+}
+
+define behavior for ZVI_I_SUPPLEMENT01 alias Booksuppl
+implementation in class zbp_vi_i_booksuppl01 unique
+persistent table /dmo/booksuppl_m
+lock dependent by Travel
+authorization dependent by Travel
+etag master LastChangedAt
+early numbering
+{
+  update;
+  delete;
+  field ( readonly ) TravelId, BookingId, BookingSupplementId;
+  association Travel;
+  association booking;
+
+  determination calculateTotalPrice on modify { create; field Price, CurrencyCode; }
+
+    mapping for /dmo/booksuppl_m
+    {
+      TravelId            = travel_id;
+      BookingId           = booking_id;
+      BookingSupplementId = booking_supplement_id;
+      CurrencyCode        = currency_code;
+      LastChangedAt       = last_changed_at;
+      Price               = price;
+      SupplementId        = supplement_id;
+    }
+}
