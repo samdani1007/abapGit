@@ -26,6 +26,12 @@
      <MSGNR>003</MSGNR>
      <TEXT>Invalid status</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZVI_RAP_MSG_CLAS</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Not authorized</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

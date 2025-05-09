@@ -8,6 +8,7 @@ CLASS lhc_booking DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS calculateTotalPrice FOR DETERMINE ON MODIFY
       IMPORTING keys FOR Booking~calculateTotalPrice.
 
+
 ENDCLASS.
 
 CLASS lhc_booking IMPLEMENTATION.
@@ -86,6 +87,8 @@ CLASS lhc_booking IMPLEMENTATION.
               REPORTED DATA(execute_reported).
 
   ENDMETHOD.
+*
+
 
 ENDCLASS.
 

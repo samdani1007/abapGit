@@ -1,29 +1,40 @@
 projection;
 strict ( 2 );
-
+use draft;
+use side effects;
 define behavior for ZVI_C_TRAVEL01 alias Travel
+use etag
 {
   use create;
   use update;
   use delete;
-use action copyTravel;
-  use association Booking { create; }
+
+//use action copyTravel;
+use action Resume;
+use action Edit;
+use action Activate;
+use action Prepare;
+use action Discard;
+
+  use association Booking { create; with draft; }
 }
 
 define behavior for ZVI_C_BOOKING01 alias Booking
+use etag
 {
   use update;
   use delete;
 
-  use association Travel;
-  use association Booksupplement { create; }
+  use association Travel{ with draft; }
+  use association Booksupplement { create; with draft; }
 }
 
 define behavior for ZVI_C_SUPPLEMENT01 alias Booksuppl
+use etag
 {
   use update;
   use delete;
 
-  use association Travel;
-  use association booking;
+  use association Travel{ with draft; }
+  use association booking { with draft; }
 }

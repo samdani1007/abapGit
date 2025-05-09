@@ -69,8 +69,8 @@ annotate view ZVI_C_TRAVEL01 with
 
      ]
 
-  @UI: {  lineItem:       [ { position: 10 },
-              { type: #FOR_ACTION, dataAction: 'copyTravel', label: 'Copy Travel' } ],
+  @UI: {  lineItem:       [ { position: 10 }],
+  //              { type: #FOR_ACTION, dataAction: 'copyTravel', label: 'Copy Travel' } ],
               identification: [ { position: 10 } ],
             selectionField: [ { position: 10 } ] }
   TravelId;

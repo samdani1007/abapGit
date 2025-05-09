@@ -1,11 +1,14 @@
-managed ;
+managed;
 strict ( 2 );
+with draft;
 
 define behavior for ZVI_I_TRAVEL01 alias Travel
 implementation in class zbp_vi_i_travel01 unique
 persistent table /dmo/travel_m
+draft table zvi_travel_d
 lock master
-authorization master ( instance )
+total etag LastChangedAt
+authorization master ( global, instance )
 etag master LastChangedAt
 early numbering
 {
@@ -14,15 +17,34 @@ early numbering
   delete;
   field ( readonly ) TravelId;
   field ( mandatory ) CustomerID;
-  factory action copyTravel [1];
-  association Booking { create (features:instance); }
+  //  factory action copyTravel [1];
+  association Booking { create ( features : instance ); with draft; }
 
-internal action recalculcTotalPrice;
+  internal action recalculcTotalPrice;
+  validation validatecustomer on save { create; field CustomerID; }
+  validation validatestatus on save { create; field OverallStatus; }
+  determine action validationCustomer { validation validateCustomer; }
+
   determination setStatusToOpen on modify { create; }
   determination calculateTotalPrice on modify { create; field BookingFee, CurrencyCode; }
 
-  validation validatecustomer on save { create; field CustomerID; }
-  validation validatestatus on save { create; field OverallStatus; }
+  side effects
+  {
+    field BookingFee affects field TotalPrice;
+    field CurrencyCode affects field TotalPrice;
+  }
+
+
+  draft action Resume;
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+
+  draft determine action Prepare
+  {
+    validation validatecustomer;
+    validation validatestatus;
+  }
 
   // instance action and dynamic action control
   action ( features : instance ) Approve result [1] $self;
@@ -51,18 +73,26 @@ internal action recalculcTotalPrice;
 define behavior for ZVI_I_BOOKING01 alias Booking
 implementation in class zbp_vi_i_booking01 unique
 persistent table /dmo/booking_m
+draft table zvi_booking_d
 lock dependent by Travel
 authorization dependent by Travel
 etag master LastChangedAt
+//etag dependent by Travel
 early numbering
 {
   update;
   delete;
   field ( readonly ) TravelId, BookingId;
-  association Travel;
-  association Booksupplement { create; }
 
+  side effects
+  {
+
+    field FlightPrice affects field Travel.TotalPrice;
+    field CurrencyCode affects field Travel.TotalPrice;
+  }
   determination calculateTotalPrice on modify { create; field FlightPrice, CurrencyCode; }
+  association Travel { with draft; }
+  association Booksupplement { create; with draft; }
 
   mapping for /dmo/booking_m
     {
@@ -83,20 +113,28 @@ early numbering
 define behavior for ZVI_I_SUPPLEMENT01 alias Booksuppl
 implementation in class zbp_vi_i_booksuppl01 unique
 persistent table /dmo/booksuppl_m
+draft table zvi_booksuppl_d
 lock dependent by Travel
 authorization dependent by Travel
 etag master LastChangedAt
+//etag dependent by Travel
 early numbering
 {
   update;
   delete;
   field ( readonly ) TravelId, BookingId, BookingSupplementId;
-  association Travel;
-  association booking;
+
+  side effects
+  {
+    field Price affects field Travel.TotalPrice;
+    field CurrencyCode affects field Travel.TotalPrice;
+  }
 
   determination calculateTotalPrice on modify { create; field Price, CurrencyCode; }
 
-    mapping for /dmo/booksuppl_m
+  association Travel { with draft; }
+  association booking { with draft; }
+  mapping for /dmo/booksuppl_m
     {
       TravelId            = travel_id;
       BookingId           = booking_id;
